@@ -36,7 +36,7 @@ PicoStepper::PicoStepper(PicoStepperConf conf) {
   this->pin4 = conf.pin4;
   this->current_step = 0;
   this->dir = 0;
-  this->last_step_us_time = 0;
+  this->last_step_us_time = 0; // timestamp in us of the last step taken
   this->delay = 60L * 1000L * 1000L / this->total_steps / conf.initial_speed;
   gpio_init(this->pin1);
   gpio_init(this->pin2);
@@ -49,7 +49,8 @@ PicoStepper::PicoStepper(PicoStepperConf conf) {
 }
 
 void PicoStepper::setSpeed(long speed) {
-  this->delay = 60L * 1000L * 1000L / this->total_steps / speed;
+  this->delay = 60L * 1000L * 1000L / this->total_steps / speed; // 'L' => type long
+  // 
 }
 
 void PicoStepper::step(int steps_to_move) {

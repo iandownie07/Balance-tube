@@ -38,6 +38,7 @@ PicoStepper::PicoStepper(PicoStepperConf conf) {
   this->dir = 0;
   this->last_step_us_time = 0; // timestamp in us of the last step taken
   this->delay = 60L * 1000L * 1000L / this->total_steps / conf.initial_speed;
+  // 1000*1000 as it's for us; (60/(total_steps_per_rev)) / speed (rpm) gives m/step so that's the delay per step 
   gpio_init(this->pin1);
   gpio_init(this->pin2);
   gpio_init(this->pin3);
@@ -65,18 +66,18 @@ void PicoStepper::step(int steps_to_move) {
   while (steps_left > 0) {
     uint64_t now = to_us_since_boot(get_absolute_time());
 
-    if (now - this->last_step_us_time >= this->delay) {
+    if (now - this->last_step_us_time >= this->delay) { // if elapsed time is greater than the delay then enter the if condition
       this->last_step_us_time = now;
 
       if (this->dir == 1) {
         this->current_step++;
 
         if (this->current_step == this->total_steps) {
-          this->current_step = 0;
+          this->current_step = 0; // reset to 0 when max reached
         }
-      } else {
+      } else { // deal with negative direction
         if (this->current_step == 0) {
-          this->current_step = this->total_steps;
+          this->current_step = this->total_steps; // reset to total_steps when 0 reached
         }
 
         this->current_step--;

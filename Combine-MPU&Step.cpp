@@ -73,11 +73,12 @@ int main() {
 		std::cout << "Current angle around the pitch axis: " << gp << "\n";
 		std::cout << "Current angle around the yaw axis: " << gy << "\n";
 
-		if (gp > 0) // I need to know if a positive gp means it slopes up or down. If it slopes up, I need to give stepper.step a positive value
+		// tilted up gives a negative angle
+		if (gp < 0) // I need to know if a positive gp means it slopes up or down. If it slopes up, I need to give stepper.step a positive value
 		{
 			stepper.step(200); // positive takes it anti-clockwise => we want more elevator force
 		}
-		else if (gp < 0) // Does a negative gp mean it slopes up or down?
+		else if (gp > 0) // Does a negative gp mean it slopes up or down?
 		{
 			stepper.step(-200); // negative takes it clockwise => we want less elevator force
 		}

@@ -78,7 +78,7 @@ int main() {
 		{
 			stepper.step(200); // positive takes it anti-clockwise => we want more elevator force
 		}
-		else if (gp > 0) // Does a negative gp mean it slopes up or down?
+		else if (gp > 0) 
 		{
 			stepper.step(-200); // negative takes it clockwise => we want less elevator force
 		}
